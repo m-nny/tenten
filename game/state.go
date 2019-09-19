@@ -5,6 +5,9 @@ import "strings"
 // BoardCell underlying type of each board cell
 type BoardCell bool
 
+// Board underlying type of board
+type Board [Boardsize][Boardsize]BoardCell
+
 const (
 	// EmptyCell string representation
 	EmptyCell string = "."
@@ -16,18 +19,18 @@ const (
 
 // State of game
 type State struct {
-	Board [Boardsize][Boardsize]BoardCell
+	board Board
 }
 
-// NewState constuctor
-func NewState() *State {
+// newState constuctor
+func newState() *State {
 	state := &State{}
 	return state
 }
 
-// ToString of string
-func (s *State) ToString() (result string) {
-	for _, row := range s.Board {
+// toString of string
+func (s *State) toString() (result string) {
+	for _, row := range s.board {
 		for _, cell := range row {
 			if cell {
 				result += FilledCell

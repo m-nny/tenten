@@ -1,16 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"math/rand"
 
 	"github.com/m-nny/tenten/game"
 )
 
 func main() {
-	state := game.NewState()
-	fmt.Printf("%#v\n", state.ToString())
-	for i := 0; i < game.Boardsize; i++ {
-		state.Board[i][i] = true
-	}
-	fmt.Printf("%#v\n", state.ToString())
+	env := game.NewEnvironment()
+	_, shapes := env.Init()
+	chosenShape := uint8(rand.Intn(len(shapes)))
+	env.Fit(chosenShape, 0, 0)
 }
