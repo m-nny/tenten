@@ -44,8 +44,8 @@ func (state *State) Fit(shape Shape, x, y uint8) error {
 	return nil
 }
 
-func GetRandomShape() Shape {
-	idx := rand.Intn(len(Shapes))
+func PickShape(population []Shape) Shape {
+	idx := rand.Intn(len(population))
 	return Shapes[idx]
 }
 

@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"math/rand"
 	"testing"
 )
@@ -13,7 +14,7 @@ func TestNewEnvironmentAndInit(t *testing.T) {
 			t.Errorf("NewEnvironment().shape[%d].IsEmpty() = %t, want %t: %v", i, got, want, shape)
 		}
 	}
-	board, shapes := env.Init()
+	state, shapes := env.Init()
 	want = false
 	for i, shape := range env.availableShapes {
 		if got := shape.IsEmpty(); got != want {
@@ -21,8 +22,8 @@ func TestNewEnvironmentAndInit(t *testing.T) {
 		}
 	}
 
-	wantBoard := env.state.board
-	if got := board; got != wantBoard {
+	wantBoard := env.state
+	if got := state; got != wantBoard {
 		t.Errorf("NewEnvironment().Init().board = %v, want %v", got, wantBoard)
 	}
 	wantShapes := env.availableShapes
@@ -31,28 +32,36 @@ func TestNewEnvironmentAndInit(t *testing.T) {
 	}
 }
 
-func TestFit(t *testing.T) {
+func TestMakeMove(t *testing.T) {
 	rand.Seed(0)
 	env := NewEnvironment()
-	env.Init()
+	emptyState, _ := env.Init()
 
 	var x, y, shapeIdx uint8 = 0, 0, 0
 
-	if got := env.Fit(shapeIdx, x, y); got != nil {
-		t.Errorf("env.Fit(%d, %d, %d) threw error %v, when it should not", shapeIdx, x, y, got)
+	state, shape, err := env.MakeMove(shapeIdx, x, y)
+	fmt.Printf("Returned %#v -> %v %v\n\n", state.toString(), shape, err)
+	if state.toString() == emptyState.toString() {
+		t.Errorf("0. env.MakeMove(%d, %d, %d).state is %v, when it should not be", shapeIdx, x, y, state.toString())
+	}
+	if !shape[shapeIdx].IsEmpty() {
+		t.Errorf("1. env.MakeMove(%d, %d, %d).shapes[%d] is %v not empty, when it should be", shapeIdx, x, y, shapeIdx, shape)
+	}
+	if err != nil {
+		t.Errorf("2. env.MakeMove(%d, %d, %d) threw error %v, when it should not", shapeIdx, x, y, err)
 	}
 
-	if got := env.Fit(shapeIdx, x, y); got == nil {
-		t.Errorf("env.Fit(%d, %d, %d) did not throw error %v, when it should", shapeIdx, x, y, got)
-	}
+	// if state, shape, err = env.MakeMove(shapeIdx, x, y); err == nil {
+	// 	t.Errorf("3. env.MakeMove(%d, %d, %d) did not throw error %v, when it should", shapeIdx, x, y, err)
+	// }
 
-	x, y = 5, 5
-	if got := env.Fit(shapeIdx, x, y); got == nil {
-		t.Errorf("env.Fit(%d, %d, %d) did not throw error %v, when it should", shapeIdx, x, y, got)
-	}
+	// x, y = 5, 5
+	// if state, shape, err = env.MakeMove(shapeIdx, x, y); err == nil {
+	// 	t.Errorf("4. env.MakeMove(%d, %d, %d) did not throw error %v, when it should", shapeIdx, x, y, err)
+	// }
 
-	shapeIdx = ShapesNum
-	if got := env.Fit(shapeIdx, x, y); got == nil {
-		t.Errorf("env.Fit(%d, %d, %d) did not throw error %v, when it should", shapeIdx, x, y, got)
-	}
+	// shapeIdx = ShapesNum
+	// if _, _, err := env.MakeMove(shapeIdx, x, y); err == nil {
+	// 	t.Errorf("5. env.Fit(%d, %d, %d) did not throw error %v, when it should", shapeIdx, x, y, err)
+	// }
 }
