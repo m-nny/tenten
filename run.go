@@ -1,14 +1,13 @@
 package main
 
 import (
-	"math/rand"
+	"fmt"
 
-	"github.com/m-nny/tenten/game"
+	"github.com/m-nny/tenten/agents"
 )
 
 func main() {
-	env := game.NewEnvironment()
-	_, shapes := env.Init()
-	chosenShape := uint8(rand.Intn(len(shapes)))
-	env.Fit(chosenShape, 0, 0)
+	lazy := agents.LazyAgent{}
+	score := agents.Play(lazy)
+	fmt.Printf("%v", score)
 }

@@ -19,7 +19,8 @@ const (
 
 // State of game
 type State struct {
-	board Board
+	Board           Board
+	AvailableShapes [ShapesNum]Shape
 }
 
 // newState constuctor
@@ -28,9 +29,46 @@ func newState() *State {
 	return state
 }
 
+// CanFit try to fit shape in board in position (x, y)
+func (state *State) CanFit(shape Shape, x, y uint8) bool {
+	x0, y0 := x, y
+	x1, y1 := x+shape.width, y+shape.height
+	for i := y0; i < y1; i++ {
+		for j := x0; j < x1; j++ {
+			if state.Board[i][j] {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+// Fit ...
+func (state *State) Fit(shape Shape, x, y uint8) error {
+	x0, y0 := x, y
+	x1, y1 := x+shape.width, y+shape.height
+	if x1 > Boardsize || y1 > Boardsize {
+		return ErrOutOfBounds(x1, Boardsize)
+	}
+	if !state.CanFit(shape, x, y) {
+		return ErrAlreadyFilled(state, x0, y0)
+	}
+	for i := y0; i < y1; i++ {
+		for j := x0; j < x1; j++ {
+			state.Board[i][j] = true
+		}
+	}
+	return nil
+}
+
+// Over ...
+func (state *State) Over() bool {
+	return false
+}
+
 // toString of string
-func (s *State) toString() (result string) {
-	for _, row := range s.board {
+func (state *State) toString() (result string) {
+	for _, row := range state.Board {
 		for _, cell := range row {
 			if cell {
 				result += FilledCell

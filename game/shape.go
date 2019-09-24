@@ -24,31 +24,12 @@ var Shapes = [...]Shape{
 	Shape{5, 1}, // 10
 }
 
-// Fit try to fit shape in board in position (x, y)
-func (state *State) Fit(shape Shape, x, y uint8) error {
-	if x+shape.width > Boardsize || y+shape.height > Boardsize {
-		return ErrOutOfBounds(x+shape.width, Boardsize)
-	}
-	for i := y; i < y+shape.height; i++ {
-		for j := x; j < x+shape.width; j++ {
-			if state.board[i][j] {
-				return ErrAlreadyFilled(state, x, y)
-			}
-		}
-	}
-	for i := y; i < y+shape.height; i++ {
-		for j := x; j < x+shape.width; j++ {
-			state.board[i][j] = true
-		}
-	}
-	return nil
-}
-
-func PickShape(population []Shape) Shape {
+func pickShape(population []Shape) Shape {
 	idx := rand.Intn(len(population))
 	return Shapes[idx]
 }
 
+// IsEmpty ...
 func (shape *Shape) IsEmpty() bool {
 	return shape.height == 0 || shape.width == 0
 }

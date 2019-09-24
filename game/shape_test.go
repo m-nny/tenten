@@ -15,22 +15,21 @@ func TestIsEmpty(t *testing.T) {
 	}
 }
 
-func TestCanFit(t *testing.T) {
+func TestApply(t *testing.T) {
 	state := newState()
 
-	var x, y uint8 = 0, 0
-	shape := Shapes[7] // 3x1
-	if got := state.Fit(shape, x, y); got != nil {
-		t.Errorf("state.Fit({%d, %d}, %d, %d) threw error %v, but it should not", shape.height, shape.width, x, y, got)
+	action := Action{7, 0, 0} // 3x1
+	if got := state.Fit(Shapes[action.Idx], action.X, action.Y); got != nil {
+		t.Errorf("state.Fit(%d) threw error %v, but it should not", action, got)
 	}
 
-	state.board[y][x] = true
-	if got := state.Fit(shape, x, y); got == nil {
-		t.Errorf("state.Fit({%d, %d}, %d, %d) did not throw error %v, but it should", shape.height, shape.width, x, y, got)
+	state.Board[action.Y][action.X] = true
+	if got := state.Fit(Shapes[action.Idx], action.X, action.Y); got == nil {
+		t.Errorf("state.Fit(%d) did not throw error %v, but it should", action, got)
 	}
 
-	x, y = 9, 9
-	if got := state.Fit(shape, x, y); got == nil {
-		t.Errorf("state.Fit({%d, %d}, %d, %d) did not throw error %v, but it should", shape.height, shape.width, x, y, got)
+	action.X, action.Y = 9, 9
+	if got := state.Fit(Shapes[action.Idx], action.X, action.Y); got == nil {
+		t.Errorf("state.Fit(%d) did not throw error %v, but it should", action, got)
 	}
 }
