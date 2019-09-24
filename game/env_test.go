@@ -41,9 +41,9 @@ func TestMakeMove(t *testing.T) {
 	action := Action{0, 0, 0}
 
 	state, _, err := env.MakeMove(action)
-	fmt.Printf("Returned %#v -> %v\n\n", state.toString(), err)
-	if state.toString() == emptyState.toString() {
-		t.Errorf("0. env.MakeMove(%v).state is %v, when it should not be", action, state.toString())
+	fmt.Printf("Returned %#v -> %v\n\n", state.ToString(), err)
+	if state.ToString() == emptyState.ToString() {
+		t.Errorf("0. env.MakeMove(%v).state is %v, when it should not be", action, state.ToString())
 	}
 	if !state.AvailableShapes[action.Idx].IsEmpty() {
 		t.Errorf("1. env.MakeMove(%v).shapes[%d] is not empty, when it should be", action, action.Idx)

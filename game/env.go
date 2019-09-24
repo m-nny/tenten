@@ -22,6 +22,14 @@ func (env *Environment) refillShapes() {
 		env.state.AvailableShapes[i] = pickShape(Shapes[:])
 	}
 }
+func (env *Environment) tryToRefillShapes() {
+	for _, shape := range env.state.AvailableShapes {
+		if !shape.IsEmpty() {
+			return
+		}
+	}
+	env.refillShapes()
+}
 
 // Init Environent
 func (env *Environment) Init() State {
@@ -43,6 +51,7 @@ func (env *Environment) MakeMove(action Action) (State, uint8, error) {
 	if err == nil {
 		env.state.AvailableShapes[action.Idx] = Shape{}
 		reward = shape.height * shape.width
+		env.tryToRefillShapes()
 	}
 	// fmt.Printf("Poop %v\n%#v %v %#v\n", action, env.state.toString(), env.state.AvailableShapes, err)
 	return env.state, reward, err

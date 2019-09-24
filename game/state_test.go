@@ -18,14 +18,14 @@ func TestNewState(t *testing.T) {
 func TestToString(t *testing.T) {
 	state := newState()
 	want := "..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n.........."
-	if got := state.toString(); got != want {
+	if got := state.ToString(); got != want {
 		t.Errorf("ToString() = %q, want %q", got, want)
 	}
 	want = "#.........\n.#........\n..#.......\n...#......\n....#.....\n.....#....\n......#...\n.......#..\n........#.\n.........#"
 	for i := 0; i < Boardsize; i++ {
 		state.Board[i][i] = true
 	}
-	if got := state.toString(); got != want {
+	if got := state.ToString(); got != want {
 		t.Errorf("ToString() = %q, want %q", got, want)
 	}
 }

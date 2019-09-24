@@ -6,7 +6,8 @@ import (
 
 // Shape ...
 type Shape struct {
-	height, width uint8
+	width, height uint8
+	// height, width uint8
 }
 
 // Shapes all allowed in-game shapes

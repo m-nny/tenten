@@ -33,6 +33,9 @@ func newState() *State {
 func (state *State) CanFit(shape Shape, x, y uint8) bool {
 	x0, y0 := x, y
 	x1, y1 := x+shape.width, y+shape.height
+	if x1 >= Boardsize || y1 >= Boardsize {
+		return false
+	}
 	for i := y0; i < y1; i++ {
 		for j := x0; j < x1; j++ {
 			if state.Board[i][j] {
@@ -66,8 +69,8 @@ func (state *State) Over() bool {
 	return false
 }
 
-// toString of string
-func (state *State) toString() (result string) {
+// ToString of string
+func (state *State) ToString() (result string) {
 	for _, row := range state.Board {
 		for _, cell := range row {
 			if cell {

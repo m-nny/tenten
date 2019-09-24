@@ -11,7 +11,7 @@ func ErrOutOfBounds(idx, bounds uint8) error {
 
 // ErrAlreadyFilled ...
 func ErrAlreadyFilled(state *State, x, y uint8) error {
-	return fmt.Errorf("game: board at (%d,%d) is already filled: %v", x, y, state.toString())
+	return fmt.Errorf("game: board at (%d,%d) is already filled: %v", x, y, state.ToString())
 }
 
 // ErrAlredyUsed ...

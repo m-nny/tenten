@@ -7,7 +7,9 @@ import (
 )
 
 func main() {
-	lazy := agents.LazyAgent{}
-	score := agents.Play(lazy)
-	fmt.Printf("%v", score)
+	runs := 1000
+	lazy := &agents.LazyAgent{}
+	score := agents.MultiPlay(lazy, runs)
+	meanScore := float32(score) / float32(runs)
+	fmt.Printf("Avg Score: %v\n", meanScore)
 }
