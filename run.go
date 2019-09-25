@@ -6,10 +6,20 @@ import (
 	"github.com/m-nny/tenten/agents"
 )
 
-func main() {
-	runs := 1000
-	lazy := &agents.LazyAgent{}
-	score := agents.MultiPlay(lazy, runs)
+func singlePlay(agent agents.Agent) {
+	score := agents.Play(agent)
+	fmt.Printf("Score: %v\n", score)
+}
+
+func multiPlay(agent agents.Agent) {
+	runs := 3
+	score := agents.MultiPlay(agent, runs)
 	meanScore := float32(score) / float32(runs)
-	fmt.Printf("Avg Score: %v\n", meanScore)
+	fmt.Printf("Score: %v\n", meanScore)
+}
+
+func main() {
+	agent := &agents.LazyAgent{}
+	singlePlay(agent)
+	multiPlay(agent)
 }

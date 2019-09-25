@@ -33,7 +33,7 @@ func newState() *State {
 func (state *State) CanFit(shape Shape, x, y uint8) bool {
 	x0, y0 := x, y
 	x1, y1 := x+shape.width, y+shape.height
-	if x1 >= Boardsize || y1 >= Boardsize {
+	if x1 > Boardsize || y1 > Boardsize {
 		return false
 	}
 	for i := y0; i < y1; i++ {
@@ -66,7 +66,19 @@ func (state *State) Fit(shape Shape, x, y uint8) error {
 
 // Over ...
 func (state *State) Over() bool {
-	return false
+	for _, shape := range state.AvailableShapes {
+		if shape.IsEmpty() {
+			continue
+		}
+		for x := uint8(0); x < Boardsize; x++ {
+			for y := uint8(0); y < Boardsize; y++ {
+				if state.CanFit(shape, x, y) {
+					return false
+				}
+			}
+		}
+	}
+	return true
 }
 
 // ToString of string

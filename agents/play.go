@@ -1,6 +1,8 @@
 package agents
 
 import (
+	"fmt"
+
 	"github.com/m-nny/tenten/game"
 )
 
@@ -9,6 +11,9 @@ func Play(agent Agent) (score uint32) {
 	env := game.NewEnvironment()
 	state := env.Init()
 	for {
+		if state.Over() {
+			break
+		}
 		// fmt.Printf("%v\n%v\n", state.ToString(), state.AvailableShapes)
 		action := agent.Think(state)
 		// fmt.Printf("%v\n\n", action)
@@ -17,9 +22,11 @@ func Play(agent Agent) (score uint32) {
 			score += uint32(reward)
 			state = newState
 		} else {
+			fmt.Println(err)
 			break
 		}
 	}
+	fmt.Printf("%v\n%v\n", state.ToString(), state.AvailableShapes)
 	return score
 }
 

@@ -19,9 +19,9 @@ func (agent *LazyAgent) Think(state game.State) (action game.Action) {
 	for x = 0; x < game.Boardsize; x++ {
 		for y = 0; y < game.Boardsize; y++ {
 			if state.CanFit(chosenShape, x, y) {
-				return game.Action{chosen, x, y}
+				return game.Action{Idx: chosen, X: x, Y: y}
 			}
 		}
 	}
-	return game.Action{255, 255, 255}
+	return game.Action{Idx: 255, X: 255, Y: 255}
 }

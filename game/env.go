@@ -37,6 +37,35 @@ func (env *Environment) Init() State {
 	return env.state
 }
 
+// Update env
+func (env *Environment) Update() {
+	hasEmptyCellX, hasEmptyCellY := [Boardsize]bool{}, [Boardsize]bool{}
+	for y := 0; y < Boardsize; y++ {
+		for x := 0; x < Boardsize; x++ {
+			if !env.state.Board[y][x] {
+				hasEmptyCellX[x] = true
+				hasEmptyCellY[y] = true
+			}
+		}
+	}
+	for i := 0; i < Boardsize; i++ {
+		if !hasEmptyCellX[i] {
+			env.score += Boardsize
+		}
+		if !hasEmptyCellY[i] {
+			env.score += Boardsize
+		}
+	}
+	for y := 0; y < Boardsize; y++ {
+		for x := 0; x < Boardsize; x++ {
+			if !hasEmptyCellX[x] || !hasEmptyCellY[y] {
+				env.state.Board[y][x] = false
+			}
+		}
+	}
+	env.tryToRefillShapes()
+}
+
 // MakeMove try to fit Shape into position x, y
 func (env *Environment) MakeMove(action Action) (State, uint8, error) {
 	var reward uint8
@@ -51,7 +80,7 @@ func (env *Environment) MakeMove(action Action) (State, uint8, error) {
 	if err == nil {
 		env.state.AvailableShapes[action.Idx] = Shape{}
 		reward = shape.height * shape.width
-		env.tryToRefillShapes()
+		env.Update()
 	}
 	// fmt.Printf("Poop %v\n%#v %v %#v\n", action, env.state.toString(), env.state.AvailableShapes, err)
 	return env.state, reward, err
