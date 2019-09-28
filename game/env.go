@@ -17,23 +17,18 @@ func NewEnvironment() *Environment {
 	}
 }
 
-func (env *Environment) refillShapes() {
-	for i := range env.state.AvailableShapes {
-		env.state.AvailableShapes[i] = pickShape(Shapes[:])
-	}
-}
 func (env *Environment) tryToRefillShapes() {
 	for _, shape := range env.state.AvailableShapes {
 		if !shape.IsEmpty() {
 			return
 		}
 	}
-	env.refillShapes()
+	env.state.refillShapes()
 }
 
 // Init Environent
 func (env *Environment) Init() State {
-	env.refillShapes()
+	env.state.refillShapes()
 	return env.state
 }
 

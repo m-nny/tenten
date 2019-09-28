@@ -66,3 +66,33 @@ func TestMakeMove(t *testing.T) {
 		t.Errorf("5. env.Fit(%v) did not throw error %v, when it should", action, err)
 	}
 }
+
+func TestUpdate(t *testing.T) {
+	env := NewEnvironment()
+	for x := 0; x < Boardsize; x++ {
+		env.state.Board[0][x] = true
+	}
+	env.Update()
+	got := true
+	for x := 0; x < Boardsize; x++ {
+		if env.state.Board[0][x] {
+			got = false
+		}
+	}
+	if !got {
+		t.Errorf("env.Update() did not empty row, when it should. %#v", env.state.ToString())
+	}
+	for y := 0; y < Boardsize; y++ {
+		env.state.Board[y][0] = true
+	}
+	env.Update()
+	got = true
+	for y := 0; y < Boardsize; y++ {
+		if env.state.Board[y][0] {
+			got = false
+		}
+	}
+	if !got {
+		t.Errorf("env.Update() did not empty column, when it should. %#v", env.state.ToString())
+	}
+}

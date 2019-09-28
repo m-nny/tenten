@@ -29,6 +29,12 @@ func newState() *State {
 	return state
 }
 
+func (state *State) refillShapes() {
+	for i := range state.AvailableShapes {
+		state.AvailableShapes[i] = pickShape(Shapes[:])
+	}
+}
+
 // CanFit try to fit shape in board in position (x, y)
 func (state *State) CanFit(shape Shape, x, y uint8) bool {
 	x0, y0 := x, y

@@ -29,3 +29,31 @@ func TestToString(t *testing.T) {
 		t.Errorf("ToString() = %q, want %q", got, want)
 	}
 }
+
+func TestCanFit(t *testing.T) {
+	state := newState()
+	want, shape, x, y := true, Shapes[0], uint8(0), uint8(0)
+	if got := state.CanFit(shape, x, y); got != want {
+		t.Errorf("state.CanFit(%v, %v, %v) = %v, want %v", shape, x, y, got, want)
+	}
+	want, state.Board[x][y] = false, true
+	if got := state.CanFit(shape, x, y); got != want {
+		t.Errorf("state.CanFit(%v, %v, %v) = %v, want %v", shape, x, y, got, want)
+	}
+	want, x, y = false, Boardsize, Boardsize
+	if got := state.CanFit(shape, x, y); got != want {
+		t.Errorf("state.CanFit(%v, %v, %v) = %v, want %v", shape, x, y, got, want)
+	}
+}
+
+func TestOver(t *testing.T) {
+	state, want := newState(), true
+	if got := state.Over(); got != want {
+		t.Errorf("state.Over() = %v, want %v", got, want)
+	}
+	state.refillShapes()
+	want = false
+	if got := state.Over(); got != want {
+		t.Errorf("state.Over() = %v, want %v", got, want)
+	}
+}
